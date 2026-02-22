@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Coffee Date?</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    text-align: center;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 40px 15px;
+    background: linear-gradient(135deg, #fff0f5, #ffe6f0);
+    min-height: 100vh;
+    position: relative;
+}
+
+/* Background heart container */
+#heartBackground {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    overflow: hidden;
+    z-index: -1;
+}
+
+/* Floating background hearts */
+.bg-heart {
+    position: absolute;
+    font-size: 20px;
+    color: rgba(255, 77, 109, 0.4);
+    animation: floatBg linear infinite;
+}
+
+@keyframes floatBg {
+    0% { transform: translateY(100vh) scale(1); opacity: 1; }
+    100% { transform: translateY(-10vh) scale(1.5); opacity: 0; }
+}
+
+h1 {
+    font-size: 22px;
+    padding: 0 10px;
+}
+
+.button-container {
+    margin-top: 30px;
+    position: relative;
+}
+
+button {
+    padding: 12px 20px;
+    font-size: 16px;
+    margin: 10px;
+    cursor: pointer;
+    border-radius: 8px;
+    border: none;
+    transition: transform 0.2s ease;
+}
+
+button:active {
+    transform: scale(0.95);
+}
+
+#yesBtn {
+    background-color: #ff4d6d;
+    color: white;
+}
+
+#noBtn {
+    position: absolute;
+    background-color: gray;
+    color: white;
+}
+
+/* Extra hearts */
+.heart {
+    position: fixed;
+    font-size: 24px;
+    animation: float 4s linear infinite;
+    color: red;
+}
+
+@keyframes float {
+    0% { transform: translateY(100vh); opacity: 1; }
+    100% { transform: translateY(-10vh); opacity: 0; }
+}
+
+#flirtSection {
+    margin-top: 30px;
+    display: none;
+}
+
+input {
+    padding: 10px;
+    width: 100%;
+    max-width: 280px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    margin-top: 10px;
+}
+</style>
+</head>
+
+<body>
+
+<div id="heartBackground"></div>
+
+<h1>Hey, Can we go out for coffee? ☕</h1>
+
+<div class="button-container">
+    <button id="yesBtn" onclick="yesClicked()">Yes ❤️</button>
+    <button id="noBtn">No 😜</button>
+</div>
+
+<div id="flirtSection">
+    <h2>You got late 😏<br>I don’t have time...<br>Please flirt with me to make me ready 💌</h2>
+    <input type="text" id="flirtInput" placeholder="Type your best flirt line...">
+    <br>
+    <button onclick="checkFlirt()">Send 😌</button>
+    <h3 id="response"></h3>
+</div>
+
+<script>
+// Move No button (works on mobile tap + desktop hover)
+function moveButton() {
+    var btn = document.getElementById("noBtn");
+    var container = document.querySelector(".button-container");
+
+    var maxX = container.clientWidth - btn.offsetWidth;
+    var maxY = 100;
+
+    var x = Math.random() * maxX;
+    var y = Math.random() * maxY;
+
+    btn.style.left = x + "px";
+    btn.style.top = y + "px";
+}
+
+// Add BOTH touch and mouse events
+document.getElementById("noBtn").addEventListener("mouseover", moveButton);
+document.getElementById("noBtn").addEventListener("touchstart", moveButton);
+
+// Yes Click
+function yesClicked() {
+    document.getElementById("flirtSection").style.display = "block";
+    createClickHearts();
+}
+
+// Background hearts
+function createBackgroundHearts() {
+    const container = document.getElementById("heartBackground");
+
+    setInterval(function() {
+        var heart = document.createElement("div");
+        heart.classList.add("bg-heart");
+        heart.innerHTML = "❤️";
+        heart.style.left = Math.random() * 100 + "vw";
+        heart.style.fontSize = (Math.random() * 15 + 15) + "px";
+        heart.style.animationDuration = (Math.random() * 5 + 5) + "s";
+
+        container.appendChild(heart);
+
+        setTimeout(() => {
+            heart.remove();
+        }, 8000);
+    }, 500);
+}
+
+// Hearts after Yes
+function createClickHearts() {
+    setInterval(function() {
+        var heart = document.createElement("div");
+        heart.classList.add("heart");
+        heart.innerHTML = "❤️";
+        heart.style.left = Math.random() * 100 + "vw";
+        heart.style.fontSize = (Math.random() * 20 + 20) + "px";
+
+        document.body.appendChild(heart);
+
+        setTimeout(() => {
+            heart.remove();
+        }, 4000);
+    }, 400);
+}
+
+// Flirt checker
+function checkFlirt() {
+    var text = document.getElementById("flirtInput").value;
+    var response = document.getElementById("response");
+
+    if (text.length > 5) {
+        response.innerHTML = "Okayyyy 😍 I’m getting ready now... Coffee date confirmed ☕❤️";
+    } else {
+        response.innerHTML = "That’s not enough 😜 Try harder!";
+    }
+}
+
+createBackgroundHearts();
+</script>
+
+</body>
+</html>
